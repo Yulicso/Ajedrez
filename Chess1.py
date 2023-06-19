@@ -16,8 +16,8 @@ class Pieza:
         return(self.IsPosFree)
 
     def Show_Info(self):
-        a_ = "placeable slot" if self.IsPosFree==0 else "not placeable slot"
-        return(self.PiezaID,f"is in the slot {self.slot} and its a ",a_)
+        a_ = "placeable slot" if self.Show_Free() else "not placeable slot"
+        return(f"{self.Show_Pieza()} Slot: {self.Show_Slot()} Is free: {self.Show_Free()}")
     def Move_Slot(self,_Pieza):
         _PiezaSlot=_Pieza.Show_Slot()
         if _Pieza!=self:
@@ -80,7 +80,7 @@ class Tablero:
         for i in range(len(self.Tablero)):
             #print(self.Tablero[i][0]+self.Tablero[i][1],end=" ")
             try:
-                print(self.Tablero[i].PiezaID,end=" ")
+                print(self.Tablero[i].Show_Pieza(),end=" ")
             except:
                 print("error")
             if brek==brekMax:
@@ -98,7 +98,7 @@ class Tablero:
         for i in range(len(self.TableroP)):
             #print(self.Tablero[i][0]+self.Tablero[i][1],end=" ")
             try:
-                print(self.TableroP[i].PiezaID,end=" ")
+                print(self.TableroP[i].Show_Pieza(),end=" ")
             except:
                 print("error")
             if brek==brekMax:
@@ -111,11 +111,18 @@ class Tablero:
 
 a=Pieza()
 b=Pieza("Y",[1,1])
+
+print(a.Show_Info())
+print(b.Show_Info())
+
 print(a.Show_Slot())
 print(b.Show_Slot())
 print(a.Move_Slot(a))
 print(a.Move_Slot(b))
 print(a.Move_Slot(b))
+
+print(a.Show_Info())
+print(b.Show_Info())
 
 try:
     tabl=Tablero(8,8)
