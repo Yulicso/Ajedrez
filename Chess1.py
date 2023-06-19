@@ -1,13 +1,16 @@
 #Python Ajedrez
 
 class Pieza:
-    def __init__(self,_idd="X",_slot=[0,0],_isFree=0):
+   def __init__(self,_idd="X",_slot=[0,0],_isFree=0):
         self.IsPosFree=_isFree
         self.PiezaID=_idd
         self.slot=[_slot[0],_slot[1]]
     
     def Get_Slot(self):
         return(self.slot)
+	
+    def Show_Pieza(self):
+	return(self.PiezaID)
     
     def Show_Info(self):
         a_ = "placeable slot" if self.IsPosFree==0 else "not placeable slot"
