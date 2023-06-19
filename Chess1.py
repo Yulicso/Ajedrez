@@ -1,28 +1,30 @@
 #Python Ajedrez
 
 class Pieza:
-   def __init__(self,_idd="X",_slot=[0,0],_isFree=0):
+    def __init__(self,_idd="X",_slot=[0,0],_isFree=False):
         self.IsPosFree=_isFree
         self.PiezaID=_idd
         self.slot=[_slot[0],_slot[1]]
     
-    def Get_Slot(self):
+    def Show_Pieza(self):
+        return(self.PiezaID)
+	
+    def Show_Slot(self):
         return(self.slot)
 	
-    def Show_Pieza(self):
-	return(self.PiezaID)
-    
+    def Show_Free(self):
+        return(self.IsPosFree)
+
     def Show_Info(self):
         a_ = "placeable slot" if self.IsPosFree==0 else "not placeable slot"
         return(self.PiezaID,f"is in the slot {self.slot} and its a ",a_)
-        
     def Move_Slot(self,_Pieza):
-        _PiezaSlot=_Pieza.Get_Slot()
+        _PiezaSlot=_Pieza.Show_Slot()
         if _Pieza!=self:
             if self.slot!=_PiezaSlot:
                 tex=f"Moved to slot {_PiezaSlot}"
                 self.slot=_PiezaSlot
-                return(tex+f"  {self.Get_Slot()}")
+                return(tex+f"  {self.Show_Slot()}")
             else:
                 return("Cant Move")
         else:
@@ -109,8 +111,8 @@ class Tablero:
 
 a=Pieza()
 b=Pieza("Y",[1,1])
-print(a.Get_Slot())
-print(b.Get_Slot())
+print(a.Show_Slot())
+print(b.Show_Slot())
 print(a.Move_Slot(a))
 print(a.Move_Slot(b))
 print(a.Move_Slot(b))
