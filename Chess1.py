@@ -1,9 +1,10 @@
 #Python Ajedrez
 	
 class Pieza:
-	def __init__(self,_idd="X",_slot=[0,0],_isFree=False):
+	def __init__(self,_id="X",_slot=[0,0],_isFree=False,_team="test"):
+		self.Team=_team
 		self.IsPosFree=_isFree
-		self.PiezaID=_idd
+		self.PiezaID=_id
 		self.slot=[_slot[0],_slot[1]]
 	
 	def Shot_Piece(self):
@@ -15,23 +16,14 @@ class Pieza:
 	def Show_Free(self):
 		return(self.IsPosFree)
 	
+	def Show_Team(self):
+		return(self.Team)
+	
 	def Show_Info(self):
-		return(f"{self.Shot_Piece()} Slot: {self.Show_Slot()} Is free: {self.Show_Free()}")
+		return(f"{self.Shot_Piece()}\nTeam: {self.Team}\nSlot: xy{self.Show_Slot()}")
 
 	def Set_Slot(self,slot):
 		self.slot=slot
-
-	def Move_Slot(self,_Pieza):
-		_PiezaSlot=_Pieza.Show_Slot()
-		if _Pieza!=self:
-			if self.slot!=_PiezaSlot:
-				tex=f"Moved to slot {_PiezaSlot}"
-				self.slot=_PiezaSlot
-				return(tex)
-			else:
-				return("Cant Move")
-		else:
-			return("IT'S ME!!!!")
 
 class Tablero:
 	def __init__(self,_w,_h):
@@ -56,7 +48,7 @@ class Tablero:
 					else:
 						_id="⬜"
 				try:
-					self.Tablero.append(Pieza(_id,[i,j]))
+					self.Tablero.append(Pieza(_id,[j,i]))
 				except:
 					print("error1")
 	
@@ -74,7 +66,7 @@ class Tablero:
 					_id=". "
 					free=True
 				try:
-					self.TableroP.append(Pieza(_id,[i,j],free))
+					self.TableroP.append(Pieza(_id,[j,i],free))
 				except:
 					print("error2")
 	
@@ -158,9 +150,10 @@ try:
 	#tabl.Imprimir_Tablero_Piezas()
 	#tabl.Imprimir_Tablero_Base()
 	tabl.Imprimir_Tablero_Juego()
+	print("Type your next action.\nM to move\nS to select\nE to close):")
 	while(game!="END"):
 		c1_1=-1;c1_2=-1;c2_1=-1;c2_2=-1
-		action=input("Type your next action, example(M to move , E to close):\nAction: ")
+		action=input("Action: ")
 		if action=="M":
 			while(c1_1<0 or c1_1>tabl.Width-1):
 				try:
@@ -183,7 +176,7 @@ try:
 					c2_2=int(input("Y coord of the piece to place: "))
 				except:
 					c2_2=-1
-			tabl.Move([c1_2,c1_1],[c2_2,c2_1])
+			tabl.Move([c1_1,c1_2],[c2_1,c2_2])
 		elif action=="E":
 			game="END"
 		
