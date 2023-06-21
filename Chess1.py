@@ -60,8 +60,28 @@ class Tablero:
 					_id="♙"
 				elif i==6:
 					_id="♟"
-				elif (i==0 or i==7)and(j==0 or j==7):
-					_id="♜"
+				elif i==0:
+					if(j==0 or j==7):
+						_id="♖"
+					elif(j==1 or j==6):
+						_id="♘"
+					elif(j==2 or j==5):
+						_id="♗"
+					elif(j==3):
+						_id="♕"
+					elif(j==4):
+						_id="♔"
+				elif i==7:
+					if(j==0 or j==7):
+						_id="♜"
+					elif(j==1 or j==6):
+						_id="♞"
+					elif(j==2 or j==5):
+						_id="♝"
+					elif(j==3):
+						_id="♚"
+					elif(j==4):
+						_id="♛"
 				else:
 					_id=". "
 					free=True
