@@ -78,19 +78,31 @@ class Piece:
 		self.PlaceSlots=[]
 	
 	def Update_Place_Slots(self,_tablero):
+		if self.Team=="Black":
+			_dir=1
+		elif self.Team=="White":
+			_dir=-1
+		#
 		if self.PiezaID in Icon().Peon:
-			if self.Team=="Black":
-				_dir=1
-			elif self.Team=="White":
-				_dir=-1
-			
 			if self.FirstMove==True:
 				self.PlaceSlots=[ [ self.Slot[0],self.Slot[1]+(1*_dir) ] , [ self.Slot[0],self.Slot[1]+(2*_dir) ] ]
 			else:
 				if _tablero.Tablero_Get_Slot([self.Slot[0],self.Slot[1]+(1*_dir)])[0].Show_Free()==True:
 					self.PlaceSlots=[ [self.Slot[0],self.Slot[1]+(1*_dir)] ]
-				else:self.PlaceSlots=[]
-					
+				else:
+					self.PlaceSlots=[]
+		#
+		if self.PiezaID in Icon().Tower:
+			LeftCheck=[]
+			RightCheck=[]
+			VerCheck=[]
+			print(self.Slot," Rightsearch")
+			for x in range(_tablero.Width):
+				if [ self.Slot[0]+x,self.Slot[1] ]!=self.Slot and self.Slot[0]+x in[0,1,2,3,4,5,6,7]:
+					if _tablero.Tablero_Get_Slot([ self.Slot[0]+x,self.Slot[1] ])[0].Show_Free()==True:
+						print(self.Slot[0]+x," ",self.Slot[1])
+					else:
+						print(f"blocked [{self.Slot[0]+x}, {self.Slot[1]}]")
 	
 	def Show_Piece(self):
 		return(self.PiezaID)
