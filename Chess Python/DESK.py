@@ -11,6 +11,7 @@ class Tablero:
 		self.Crear_Tablero_Base()
 		self.Crear_Tablero_Piezas()
 	
+	#Create the base chessboard
 	def Crear_Tablero_Base(self):
 		for i in range(self.Height):
 			for j in range(self.Width):
@@ -149,51 +150,78 @@ class Tablero:
 				return([self.TableroP[i],i])
 	
 	def Move(self,pos1,pos2):
+
+		error_msg=[
+				"Invalid move. You can't move an empty slot",
+				"Invalid move. You can't move a piece that's not your color",
+				"Invalid move. Cant't move there, Team piece is in the slot",#idk why i keep it, its ok :p
+				"Invalid move. Cant't move there, Enemy piece is in the slot",
+				"Invalid move. Destination Slot not in Patho Slolts"
+			]
+		
 		Pice_1=self.Tablero_Get_Slot(pos1)[0]
 		id_1=self.Tablero_Get_Slot(pos1)[1]
 		Pice_2=self.Tablero_Get_Slot(pos2)[0]
 		id_2=self.Tablero_Get_Slot(pos2)[1]
 		
-		if (Pice_1.Show_Free()==False) and (Pice_2.Show_Free()==True) and (Pice_1.Show_Team()==self.Turn) and (pos2 in Pice_1.Show_Place_Slots()):
-			print()
-			print(f"moving {Pice_1.Show_Piece()} from {Pice_1.Show_Slot()} to {Pice_2.Show_Slot()}")
-			tempPice1=Pice_1
-			tempSlot1=Pice_1.Show_Slot()
-			tempPice2=Pice_2
-			tempSlot2=Pice_2.Show_Slot()
-			
-			Pice_2=tempPice1
-			Pice_1=tempPice2
-			
-			Pice_2.Set_Slot(tempSlot2)
-			Pice_1.Set_Slot(tempSlot1)
-			self.TableroP[id_1]=Pice_1
-			self.TableroP[id_2]=Pice_2
-			
-			self.Turn="White" if self.Turn=="Black" else "Black"
-			self.Imprimir_Tablero_Juego()
-			print("Turn of",self.Turn)
-			print()
+		if (Pice_1.Show_Free()==False) and (Pice_1.Show_Team()==self.Turn) and (pos2 in Pice_1.Show_Place_Slots()):
+			if (Pice_2.Show_Free()==True):
+				print()
+				print(f"moving {Pice_1.Show_Piece()} from {Pice_1.Show_Slot()} to {Pice_2.Show_Slot()}")
+				#Set temporal pieces and slots
+				tempPice1=Pice_1
+				tempSlot1=Pice_1.Show_Slot()
+				tempPice2=Pice_2
+				tempSlot2=Pice_2.Show_Slot()
+				
+				#Changing positions
+				Pice_2=tempPice1
+				Pice_1=tempPice2
+				
+				#Upating slots
+				Pice_2.Set_Slot(tempSlot2)
+				Pice_1.Set_Slot(tempSlot1)
+				#upating positions in the main desk
+				self.TableroP[id_1]=Pice_1
+				self.TableroP[id_2]=Pice_2
+				
+				#self.Turn="White" if self.Turn=="Black" else "Black"
+				self.Imprimir_Tablero_Juego()
+				print("Turn of",self.Turn)
+				print()
+			else:
+				if Pice_2.Show_Team()==self.Turn:
+					print(error_msg[2])
+				else:
+					print(f"Capturing {Pice_2.Show_Piece()} with {Pice_1.Show_Piece()}")
+					print(error_msg[3])
+					#Set temporal pieces and slots
+					tempPice1=Pice_1
+					tempSlot1=Pice_1.Show_Slot()
+					tempPice2=Pice_2
+					tempSlot2=Pice_2.Show_Slot()
+					
+					#Changing positions
+					Pice_2=tempPice1
+					Pice_1=tempPice2
+					
+					#Replacing the changed position with an empty slot
+					Pice_2.Set_Slot(tempSlot2)
+					Pice_1=Piece(". ",tempSlot1,True,"")
+					#upating positions in the main desk
+					self.TableroP[id_1]=Pice_1
+					self.TableroP[id_2]=Pice_2
+					self.Turn="White" if self.Turn=="Black" else "Black"
+					self.Imprimir_Tablero_Juego()
+					print("Turn of",self.Turn)
+					print()
 		else:
-			error_msg=[
-				"Invalid move. You can't move an empty slot",
-				"Invalid move. You can't move a piece that's not your color",
-				"Invalid move. Cant't move there, Team piece is in the slot",
-				"Invalid move. Cant't move there, Enemy piece is in the slot",
-				"Invalid move. Destination Slot not in Patho Slolts"
-			]
 			if (pos2 in Pice_1.Show_Place_Slots()):
 				if Pice_1.Show_Free()==False and Pice_1.Show_Team()!=self.Turn:
 					print(error_msg[1])
 				else:
 					if Pice_1.Show_Free()==True:
 						print(error_msg[0])
-					else:
-						if Pice_2.Show_Free()==False:
-							if Pice_2.Show_Team()==self.Turn:
-								print(error_msg[2])
-							else:
-								print(error_msg[3])
 			else:
 				print(error_msg[4])
 	def Select(self,pos):
