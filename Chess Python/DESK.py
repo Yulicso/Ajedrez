@@ -185,7 +185,7 @@ class Tablero:
 				self.TableroP[id_1]=Pice_1
 				self.TableroP[id_2]=Pice_2
 				
-				#self.Turn="White" if self.Turn=="Black" else "Black"
+				self.Turn="White" if self.Turn=="Black" else "Black"
 				self.Imprimir_Tablero_Juego()
 				print("Turn of",self.Turn)
 				print()
@@ -194,7 +194,7 @@ class Tablero:
 					print(error_msg[2])
 				else:
 					print(f"Capturing {Pice_2.Show_Piece()} with {Pice_1.Show_Piece()}")
-					print(error_msg[3])
+					#print(error_msg[3])
 					#Set temporal pieces and slots
 					tempPice1=Pice_1
 					tempSlot1=Pice_1.Show_Slot()
