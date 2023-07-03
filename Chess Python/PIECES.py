@@ -51,7 +51,6 @@ class Piece:
 		#  T O W E R
 		if self.PiezaID in Icon().Tower:
 			self.PlaceSlots=[]
-
 			Search_Loop(-1,0)
 			Search_Loop(1,0)
 			Search_Loop(0,-1)
@@ -84,7 +83,6 @@ class Piece:
 			Search_Loop(1,0)
 			Search_Loop(0,-1)
 			Search_Loop(0,1)
-
 			Search_Loop(-1,-1)
 			Search_Loop(1,-1)
 			Search_Loop(-1,1)
@@ -97,13 +95,10 @@ class Piece:
 			Search_Loop(1,0,1)
 			Search_Loop(0,-1,1)
 			Search_Loop(0,1,1)
-
 			Search_Loop(-1,-1,1)
 			Search_Loop(1,-1,1)
 			Search_Loop(-1,1,1)
 			Search_Loop(1,1,1)
-
-
 	
 	def Show_Piece(self):
 		return(self.PiezaID)
