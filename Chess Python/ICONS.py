@@ -7,7 +7,7 @@ class Icon:
 		self.King	=	["♔ ","♚ "]
 		self.Queen	=	["♕ ","♛ "]
 		self.Empty	=	["⬛","⬜"]
-		self.Select =   ["▒▒","▓▓"]
+		self.Select	=	["▒▒","▓▓"]
 	
 	def Piece_Peon(self,color):
 		if color=="Black":
