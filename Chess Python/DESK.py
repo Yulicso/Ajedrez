@@ -3,8 +3,8 @@ from PIECES import Piece
 
 class Tablero:
 	def __init__(self,_w,_h):
-		self.Width=_w
-		self.Height=_h
+		self.Width=max(_w,8)
+		self.Height=max(_h,8)
 		self.Turn="Black"
 		self.Tablero=[]
 		self.TableroP=[]
@@ -37,15 +37,15 @@ class Tablero:
 			for j in range(self.Width):
 				free=False
 				tim=""
-				if i==0 or i==1:
+				if i<2:
 					tim="Black"
-				elif i==6 or i==7:
+				elif i>self.Height-3:
 					tim="White"
 				else:
 					tim="slot"
 				if i==1:
 					_id=Icon().Get_Piece_Icon("P","Black")
-				elif i==6:
+				elif i==self.Height-2:
 					_id=Icon().Get_Piece_Icon("P","White")
 				elif i==0:
 					if(j==0 or j==7):
@@ -58,7 +58,7 @@ class Tablero:
 						_id=Icon().Get_Piece_Icon("Q","Black")
 					elif(j==4):
 						_id=Icon().Get_Piece_Icon("K","Black")
-				elif i==7:
+				elif i==self.Height-1:
 					if(j==0 or j==7):
 						_id=Icon().Get_Piece_Icon("T","White")
 					elif(j==1 or j==6):
@@ -113,8 +113,14 @@ class Tablero:
 		brekMax=self.Width-1
 		brek=0
 		fil=0
+		print("   ",end="")
+		for i in range(self.Width):
+			sep=" " if i<10 else ""
+			print(i,end=sep)
+		print()
 		for i in range(len(self.TableroP)):
-			
+			if i==0:
+				print(f"{int(i/self.Height)}  ",end="")
 			if self.TableroP[i].Show_Free()==False:
 				if len(ArrSel)>0:
 					if self.TableroP[i].Show_Slot() in (ArrSel):
@@ -135,6 +141,9 @@ class Tablero:
 				fil+=1
 				brek=0
 				print()
+				if i<len(self.TableroP)-1:
+					sep=" " if i<319 else ""
+					print(f"{int((i+1)/self.Height)}{sep} ",end="")
 			else:
 				brek+=1
 	
@@ -194,7 +203,6 @@ class Tablero:
 					print(error_msg[2])
 				else:
 					print(f"Capturing {Pice_2.Show_Piece()} with {Pice_1.Show_Piece()}")
-					#print(error_msg[3])
 					#Set temporal pieces and slots
 					tempPice1=Pice_1
 					tempSlot1=Pice_1.Show_Slot()
@@ -238,3 +246,24 @@ class Tablero:
 				print(error_msg[1])
 			elif select_piece.Show_Free()==True:
 				print(error_msg[0])
+	
+	def Check_Winner(self):
+		getKingB=0
+		getKingW=0
+		for i in range(len(self.TableroP)):
+			if self.TableroP[i].Show_Piece() in Icon().King:
+				if self.TableroP[i].Show_Team()=="Black":
+					getKingB=1
+				if self.TableroP[i].Show_Team()=="White":
+					getKingW=1
+		if [getKingB,getKingW]==[1,1]:
+			return(False)
+		else:
+			if getKingB==0 and getKingW==1:
+				print("!!! White team WON !!!!")
+				print("Thanks for playing :)")
+				return(True)
+			elif getKingB==1 and getKingW==0:
+				print("!!! Black team WON !!!!")
+				print("Thanks for playing :)")
+				return(True)

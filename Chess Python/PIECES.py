@@ -7,33 +7,37 @@ class Piece:
 		self.IsPosFree=_isFree
 		self.PiezaID=_id
 		self.Slot=[_slot[0],_slot[1]]
-		self.FirstMove=True
+		self.FirstMove=1
 		self.PlaceSlots=[]
 	
 	def Update_Place_Slots(self,_tablero):
-		def Search_Loop(_width,_height,_range=None):
+		def Search_Loop(_width,_height,_range=None,_pieceEx=False):
 			if _range==None:
-				_range=_tablero.Width
+				_range=max(_tablero.Width,_tablero.Height)
 			else:
 				if _range==0:
 					_range=2
 				else:
 					_range+=1
-			#searchSlot=[]
 			for x in range(_range):
-				CoordExists=_tablero.Coord_In_Tablero([self.Slot[0]+(x*_width),self.Slot[1]+(x*_height)])
-				NotMe=[self.Slot[0]+(x*_width),self.Slot[1]+(x*_height)]!=self.Slot
+				NewCoord=[self.Slot[0]+(x*_width),self.Slot[1]+(x*_height)]
+				CoordExists=_tablero.Coord_In_Tablero(NewCoord)
+				NotMe=NewCoord!=self.Slot
+
 				if(NotMe and CoordExists):
-					if _tablero.Tablero_Get_Slot([ self.Slot[0]+(x*_width),self.Slot[1]+(x*_height) ])[0].Show_Free()==True:
-						#searchSlot.append([self.Slot[0]+(x*_width),self.Slot[1]+(x*_height)])
-						self.PlaceSlots.append([self.Slot[0]+(x*_width),self.Slot[1]+(x*_height)])
-						#print(COORD_TRADUCTOR([self.Slot[0]+(x*_width),self.Slot[1]+(x*_height)]).Return_Traduced())
+					SearchPiece=_tablero.Tablero_Get_Slot(NewCoord)[0]
+					if SearchPiece.Show_Free()==True and _pieceEx==False:
+						self.PlaceSlots.append(NewCoord)
 					else:
-						if self.PiezaID not in Icon().Peon:
-							if _tablero.Tablero_Get_Slot([ self.Slot[0]+(x*_width),self.Slot[1]+(x*_height) ])[0].Show_Team()!=self.Team:
-								#searchSlot.append([self.Slot[0]+(x*_width),self.Slot[1]+(x*_height)])
-								self.PlaceSlots.append([self.Slot[0]+(x*_width),self.Slot[1]+(x*_height)])
+						# Osnly the Peon piece change the exception when searching in diagonal
+						# and it's the default when searching the slot in front of it
+						if _pieceEx==False:
+							if SearchPiece.Show_Team()!=self.Team and self.PiezaID not in Icon().Peon:
+								self.PlaceSlots.append(NewCoord)
 							break
+						else:
+							if SearchPiece.Show_Team()!=self.Team and SearchPiece.Show_Free()==False:
+								self.PlaceSlots.append(NewCoord)
 			#return(searchSlot)
 		if self.Team=="Black":
 			_dir=1
@@ -43,10 +47,9 @@ class Piece:
 		#  P E O N
 		if self.PiezaID in Icon().Peon:
 			self.PlaceSlots=[]
-			if self.FirstMove==True:
-				Search_Loop(0,1*_dir,2)
-			else:
-				Search_Loop(0,1*_dir,1)
+			Search_Loop(-1,+_dir,1					,True	)
+			Search_Loop(+1,+_dir,1					,True	)
+			Search_Loop(0,1*_dir,1+self.FirstMove			)
 		
 		#  T O W E R
 		if self.PiezaID in Icon().Tower:
@@ -133,5 +136,5 @@ class Piece:
 
 	def Set_Slot(self,slot):
 		if self.Show_Free()==False:
-			self.FirstMove=False
+			self.FirstMove=0
 		self.Slot=slot

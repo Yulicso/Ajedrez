@@ -8,7 +8,7 @@ tabl=Tablero(8,8)
 #tabl.Imprimir_Tablero_Base()
 tabl.Imprimir_Tablero_Juego()
 print("Type your next action.\nM to move\nS to select\nE to close:")
-while(game!="END"):
+while(tabl.Check_Winner()==False and game=="START"):
 	c1_1=-1;c1_2=-1;c2_1=-1;c2_2=-1
 	action=input("Action: ")
 	if action=="M":
@@ -49,4 +49,3 @@ while(game!="END"):
 		tabl.Select([c1_1,c1_2])
 	elif action=="E":
 		game="END"
-	
