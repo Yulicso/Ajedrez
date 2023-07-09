@@ -1,6 +1,5 @@
 # ! CHESS !
-I'm just trying to code "Chess" in my way, no tutorials, no external references, just coding it as how i understand. :D
-not sure how to do the checkmate thing, so you lose only wwhen your king dies, simple.
+I'm just trying to code "Chess" in my way, no tutorials, no external references, just coding it as how i understand :D. Not sure how to do the checkmate thing, so you lose only when your king dies, simple.
 
 # How to play:
 *-to get started run CHESS_MAIN.py,*
